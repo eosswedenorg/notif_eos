@@ -10,14 +10,11 @@ NOTIF_EOS_PATH=$(dirname "$0")
 # source config file
 source ${NOTIF_EOS_PATH}/notif_eos.conf || exit 1
 
-check_dep()
-{
-    # check dependencies
-    which ${CLEOS_PATH} > /dev/null || return 1
-    which curl          > /dev/null || return 1
-    which jq            > /dev/null || return 1
-    which base64        > /dev/null || return 1
-}
+# check dependencies
+which ${CLEOS_PATH} > /dev/null || exit 1
+which curl          > /dev/null || exit 1
+which jq            > /dev/null || exit 1
+which base64        > /dev/null || exit 1
 
 notif_msg()
 {
@@ -71,8 +68,6 @@ notif_eos()
         current_page=$(${CLEOS_PATH} get actions -j ${account} ${next_seq} ${page_size})
     done
 }
-
-check_dep || exit 1
 
 # iterate over accounts to track with their respective jq expressions
 for arg in $(echo "${TRACK_ACCOUNTS}" | jq -r '.[] | @base64')
