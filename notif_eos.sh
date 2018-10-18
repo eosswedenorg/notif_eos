@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# todo: dont notify if file didnt exist
 # todo: make possible to notify more than one telegram url
 # todo: make possible to track an account more than once
 # todo: add .last_seq to avoid fetching all everytime
@@ -8,7 +9,7 @@
 NOTIF_EOS_PATH=$(dirname "$0")
 
 # source config file
-source ${NOTIF_EOS_PATH}/notif_eos.conf.sample || exit 1
+source ${NOTIF_EOS_PATH}/notif_eos.conf || exit 1
 
 check_dep()
 {
