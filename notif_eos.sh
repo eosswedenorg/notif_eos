@@ -43,10 +43,10 @@ notif_eos()
     # grab all actions
     while true
     do
-        page=$(${CLEOS_PATH} get actions --full -j ${1} ${i} ${page_size} | jq -c ${2})
+        page=$(${CLEOS_PATH} get actions --full -j ${1} ${i} ${page_size})
         page_count=$(echo "${page}" | wc -l)
 
-        echo "${page}" | uniq
+        echo "${page}" | jq -c ${2} | uniq
 
         # paginate
         i=$(( ${i} + ${page_size} + 1 ))
@@ -91,7 +91,7 @@ do
         message=$(cat ${NOTIF_EOS_PATH}/.notif_${account} | tail -n ${new_msg_amnt})
 
         if [ ${old_count} -gt 0 ]; then
-            notif_msg ${message}
+            notif_msg "${message}"
         fi
 
         # store new count
