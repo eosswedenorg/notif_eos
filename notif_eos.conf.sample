@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# -*- EOSIO -*- #
+CLEOS_PATH=cleos
+
+# -*- Telegram Hooks -*- #
+TELEGRAM_BOT="000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+TELEGRAM_CHAT="-000000000"
+TELEGRAM_API="https://api.telegram.org/bot"
+TELEGRAM_SEND="${TELEGRAM_API}${TELEGRAM_BOT_ID}/sendMessage"
+
+# -*- Accounts to Track -*- #
+TRACK_ACCOUNTS=$(cat <<EOF
+[
+    {
+        "account_name": "accountnum11",
+        "jq_expression": ".actions[]|{memo:.action_trace.act.data}"
+    }, {
+        "account_name": "ecafofficial",
+        "jq_expression": ".actions[]|{memo:.action_trace.act.data.memo}|select(.memo!=null)|.memo|[match(\".*pdf.*\")]|.[].string"
+    }
+]
+EOF
+)
+
