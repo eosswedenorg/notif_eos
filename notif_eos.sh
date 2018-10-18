@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# todo: dont notify if file didnt exist
 # todo: make possible to notify more than one telegram url
 # todo: make possible to track an account more than once
 # todo: add .last_seq to avoid fetching all everytime
@@ -83,7 +82,7 @@ do
         echo ${arg} | base64 --decode | jq -r ${1}
     }
 
-    # init. variables
+    # init. params
     account=$(_jq '.account_name')
     jqexpr=$(_jq '.jq_expression')
 
@@ -105,8 +104,12 @@ do
     # send message if there are new notifications
     if [ ${new_count} -gt ${old_count} ]; then
         new_msg_amnt=$(( ${new_count} - ${old_count} ))
-        message=$(cat ${NOTIF_EOS_PATH}/.notif_${account} | tail -n ${new_count})
-        notif_msg ${message}
+        message=$(cat ${NOTIF_EOS_PATH}/.notif_${account} | tail -n ${new_msg_amnt})
+
+        if [ ${old_count} -gt 0 ]; then
+            notif_msg ${message}
+        fi
+
         # store new count
         echo ${new_count} > ${NOTIF_EOS_PATH}/.count_${account}
     fi
