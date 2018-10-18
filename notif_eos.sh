@@ -29,7 +29,7 @@ notif_msg()
 
     # send the message
     curl --data chat_id="${TELEGRAM_CHAT}" \
-         --data-urlencode "text=$(echo -ne ${1})" "${TELEGRAM_SEND}?parse_mode=html" \
+         --data-urlencode "text=$(echo -ne ${1})" "${TELEGRAM_SEND}" \
          > /dev/null 2>&1
 }
 
