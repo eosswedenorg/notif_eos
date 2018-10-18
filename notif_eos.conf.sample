@@ -7,7 +7,7 @@ CLEOS_PATH=cleos
 TELEGRAM_BOT="000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 TELEGRAM_CHAT="-000000000"
 TELEGRAM_API="https://api.telegram.org/bot"
-TELEGRAM_SEND="${TELEGRAM_API}${TELEGRAM_BOT_ID}/sendMessage?parse_mode=html"
+TELEGRAM_SEND="${TELEGRAM_API}${TELEGRAM_BOT}/sendMessage?parse_mode=html"
 
 # -*- Accounts to Track -*- #
 TRACK_ACCOUNTS=$(cat <<EOF
