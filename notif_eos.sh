@@ -36,36 +36,25 @@ notif_eos()
         return 1
     fi
 
-    # grab the last actions of the given account
-    current_page=$(${CLEOS_PATH} get actions -j ${1})
+    # init. params
+    page_size=20
+    i=0
 
     # grab all actions
     while true
     do
-        # grab the page's first action's seq.
-        first_seq=$(echo ${current_page} | jq '.actions[0].account_action_seq')
+        page=$(${CLEOS_PATH} get actions --full -j ${1} ${i} ${page_size} | jq -c ${2})
+        page_count=$(echo "${page}" | wc -l)
 
-        # grab last
-        last_seq=$(echo ${current_page} | jq '.actions[-1].account_action_seq')
-
-        # determine page size
-        page_size=$(( ${last_seq} - ${first_seq} ))
-
-        # print to fd1
-        echo ${current_page} | jq -c ${2}
+        echo "${page}" | uniq
 
         # paginate
-        next_seq=$(( ${first_seq} - ${page_size} - 1 ))
-        if [ ${next_seq} -lt 0 ]; then
-            next_seq=0
-            page_size=$(( ${first_seq} - 1 ))
-        fi
-        if [ ${page_size} -lt 0 ]; then
+        i=$(( ${i} + ${page_size} + 1 ))
+
+        # break if reached last action
+        if [ "${page_size}" -gt "${page_count}" ]; then
             break
         fi
-
-        # grab next page
-        current_page=$(${CLEOS_PATH} get actions -j ${account} ${next_seq} ${page_size})
     done
 }
 
