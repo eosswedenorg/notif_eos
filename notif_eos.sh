@@ -5,7 +5,7 @@
 # todo: add .last_seq to avoid fetching all everytime
 
 # path of this script
-NOTIF_EOS_PATH=$(dirname "$0")
+NOTIF_EOS_PATH="$(dirname "$(readlink -f "$0")")"
 
 # source config file
 source ${NOTIF_EOS_PATH}/notif_eos.conf || exit 1
