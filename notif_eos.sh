@@ -82,13 +82,13 @@ do
     notif_eos ${account} ${jqexpr} > ${NOTIF_EOS_PATH}/.notif_${account}
 
     # count them
-    old_count=$(cat ${NOTIF_EOS_PATH}/.count_${account})
-    new_count=$(cat ${NOTIF_EOS_PATH}/.notif_${account} | wc -l)
+    old_count=$(< ${NOTIF_EOS_PATH}/.count_${account})
+    new_count=$(wc -l < ${NOTIF_EOS_PATH}/.notif_${account})
 
     # send message if there are new notifications
     if [ ${new_count} -gt ${old_count} ]; then
         new_msg_amnt=$(( ${new_count} - ${old_count} ))
-        message=$(cat ${NOTIF_EOS_PATH}/.notif_${account} | tail -n ${new_msg_amnt})
+        message=$(tail -n ${new_msg_amnt} < ${NOTIF_EOS_PATH}/.notif_${account})
 
         if [ ${old_count} -gt 0 ]; then
             notif_msg "${message}"
